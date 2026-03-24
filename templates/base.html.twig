@@ -1,17 +1,51 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+{# templates/project/index.html.twig #}
+{% extends 'base.html.twig' %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-</html>
+{% block title %}Liste des projets{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="mb-4">Liste des projets</h1>
+
+    {# Tableau Bootstrap pour afficher les projets #}
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Titre</th>
+                <th>Enseignant</th>
+                <th>Nombre d'étudiants</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for projet in projets %}
+                <tr>
+                    <td>{{ projet.titre }}</td>
+                    <td>{{ projet.enseignant.nom }}</td>
+                    <td>{{ projet.etudiants|length }}</td>
+                    <td>
+                        {% if projet.statut == 'Terminé' %}
+                            <span class="badge bg-success">{{ projet.statut }}</span>
+                        {% elseif projet.statut == 'En cours' %}
+                            <span class="badge bg-warning text-dark">{{ projet.statut }}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ projet.statut }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('project_show', {'id': projet.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                        <a href="{{ path('project_edit', {'id': projet.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        <a href="{{ path('project_delete', {'id': projet.id}) }}" class="btn btn-danger btn-sm"
+                           onclick="return confirm('Voulez-vous vraiment supprimer ce projet ?');">Supprimer</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucun projet trouvé.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
