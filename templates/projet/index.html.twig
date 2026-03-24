@@ -5,7 +5,15 @@
 {% block body %}
 <h1>Liste des Projets</h1>
 
-<table border="1">
+{# === Formulaire de recherche / filtrage === #}
+{{ form_start(form) }}
+    {{ form_row(form.titre) }}
+    {{ form_row(form.statut) }}
+    <button class="btn btn-primary">Filtrer</button>
+{{ form_end(form) }}
+
+{# === Tableau des projets === #}
+<table border="1" style="margin-top: 20px;">
     <thead>
         <tr>
             <th>Titre</th>
@@ -20,10 +28,8 @@
         <tr>
             <td>{{ projet.titre }}</td>
             <td>{{ projet.description }}</td>
-
             <td>{{ projet.enseignant.nom }}</td>
             <td>{{ projet.etudiants|length }}</td>
-
             <td>
                 {% if projet.statut == 'Terminé' %}
                     <span style="color:green">Terminé</span>
