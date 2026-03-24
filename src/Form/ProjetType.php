@@ -2,28 +2,27 @@
 
 namespace App\Form;
 
-use App\Entity\Enseignant;
-use App\Entity\Etudiant;
 use App\Entity\Projet;
+use App\Entity\Etudiant;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ProjetType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('titre') // Champ texte pour le titre
-            ->add('description') // Champ texte pour la description
+            ->add('titre')
+            ->add('description')
             ->add('dateDebut', DateType::class, [
-                'widget' => 'single_text' // HTML5 date picker
+                'widget' => 'single_text',
             ])
             ->add('dateFin', DateType::class, [
-                'widget' => 'single_text'
+                'widget' => 'single_text',
             ])
             ->add('statut', ChoiceType::class, [
                 'choices' => [
@@ -32,17 +31,12 @@ class ProjetType extends AbstractType
                     'Terminé' => 'Terminé',
                 ],
             ])
-            ->add('enseignant', EntityType::class, [
-                'class' => Enseignant::class,
-                'choice_label' => 'nom', // affichera le nom de l'enseignant
-            ])
             ->add('etudiants', EntityType::class, [
                 'class' => Etudiant::class,
-                'choice_label' => 'nom', // affichera le nom de l'étudiant
-                'multiple' => true,       // permet de sélectionner plusieurs étudiants
-                'expanded' => true,       // affichera des cases à cocher
-            ])
-        ;
+                'choice_label' => 'nom',
+                'multiple' => true,
+                'expanded' => true, // checkboxes
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
