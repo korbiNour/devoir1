@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Projets{% endblock %}
+
+{% block body %}
+<h1>Liste des Projets</h1>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Enseignant</th>
+            <th>Nombre d'étudiants</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for projet in projets %}
+        <tr>
+            <td>{{ projet.titre }}</td>
+            <td>{{ projet.description }}</td>
+
+            <td>{{ projet.enseignant.nom }}</td>
+            <td>{{ projet.etudiants|length }}</td>
+
+            <td>
+                {% if projet.statut == 'Terminé' %}
+                    <span style="color:green">Terminé</span>
+                {% elseif projet.statut == 'En cours' %}
+                    <span style="color:orange">En cours</span>
+                {% else %}
+                    <span style="color:blue">En préparation</span>
+                {% endif %}
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">Aucun projet trouvé</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
